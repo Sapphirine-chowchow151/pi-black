@@ -72,7 +72,9 @@ jobs:
           cp build-output/pi-windows-x64.zip release-assets/
           cp patches/*.patch release-assets/
           cp config/pi.env release-assets/PI_BUILD_INPUTS.env
-          cp BUILD.md RELEASE.md release-assets/
+          cp BUILD.md release-assets/
+          sed "s/<tag>/$RELEASE_TAG/g" RELEASE.md > release-assets/RELEASE.md
+          cp install.sh launcher.sh release-assets/
           ./scripts/write-provenance.sh release-assets/PROVENANCE.txt "$RELEASE_TAG"
           cd release-assets
           checksum_assets=(
@@ -87,6 +89,8 @@ jobs:
             PI_BUILD_INPUTS.env
             BUILD.md
             PROVENANCE.txt
+            install.sh
+            launcher.sh
           )
           sha256sum "${checksum_assets[@]}" > SHA256SUMS
 
@@ -144,6 +148,8 @@ jobs:
             PI_BUILD_INPUTS.env
             BUILD.md
             PROVENANCE.txt
+            install.sh
+            launcher.sh
             SHA256SUMS
           )
           gh release create "$RELEASE_TAG" \

@@ -12,11 +12,19 @@ Pi Black is pinned to Pi 0.84.1 and fails closed on other Pi versions.
 pi install git:github.com/paoloanzn/pi-black
 ```
 
-For a release, pin the tag:
+Pi checks unpinned Git packages for updates in the background. When a newer Pi Black commit is available, Pi displays a package-update notice; apply it with:
 
 ```sh
-pi install git:github.com/paoloanzn/pi-black@v0.84.1-cc2.1.224.1
+pi update --extensions
 ```
+
+For a reproducible install, pin a release tag:
+
+```sh
+pi install git:github.com/paoloanzn/pi-black@v0.84.1-cc2.1.224.2
+```
+
+Pinned packages do not move automatically. Install a newer tagged ref explicitly when you are ready to upgrade.
 
 Then use Pi's normal Anthropic login:
 
@@ -54,9 +62,23 @@ npm run check
 
 Public CI uses fake transports only. It never makes provider requests and requires no credentials.
 
-## Patch and standalone binaries
+## Standalone installer and binaries
 
-The repository still pins an immutable commit from [`paoloanzn/pi`](https://github.com/paoloanzn/pi), applies the patch under `patches/`, and delegates standalone compilation to Pi's release builder.
+The Pi package is the recommended installation. macOS and Linux users who prefer the standalone patched build can install the latest native release as `pi-black`:
+
+```sh
+curl -fsSL https://github.com/paoloanzn/pi-black/releases/latest/download/install.sh | sh
+```
+
+The installed launcher checks the latest release checksum at interactive startup. If the installed build differs, it offers to update before starting Pi Black. Downloads are checksum-verified; network-check failures are silent, while a rejected or failed update continues with the installed build. Set `PI_BLACK_NO_UPDATE_CHECK=1` to disable this check; Pi's `PI_OFFLINE=1` also disables it.
+
+Install a specific standalone release with `PI_BLACK_RELEASE`:
+
+```sh
+curl -fsSL https://github.com/paoloanzn/pi-black/releases/latest/download/install.sh | PI_BLACK_RELEASE=v0.84.1-cc2.1.224.2 sh
+```
+
+The repository pins an immutable commit from [`paoloanzn/pi`](https://github.com/paoloanzn/pi), applies the patch under `patches/`, and delegates standalone compilation to Pi's release builder.
 
 ```sh
 ./scripts/verify.sh

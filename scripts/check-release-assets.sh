@@ -19,6 +19,8 @@ expected=(
     PI_BUILD_INPUTS.env
     BUILD.md
     PROVENANCE.txt
+    install.sh
+    launcher.sh
     SHA256SUMS
 )
 for asset in "${expected[@]}"; do

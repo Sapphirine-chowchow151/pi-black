@@ -1,6 +1,6 @@
 # Pi Black
 
-Claude Code wire compatibility for Pi.
+Use your Claude Max (or Pro) subscription with Pi.
 
 This unofficial release is installable as a Pi package from its Git tag. It also applies the repository's retained patch series to the immutable Pi commit recorded in `config/pi.env` and builds Pi's six supported standalone targets.
 
@@ -10,11 +10,18 @@ Install the package with:
 pi install git:github.com/paoloanzn/pi-black@<tag>
 ```
 
+On macOS or Linux, install the standalone build and its interactive update detector with:
+
+```sh
+curl -fsSL https://github.com/paoloanzn/pi-black/releases/latest/download/install.sh | sh
+```
+
 Binary assets include:
 
 - macOS arm64 and x64 archives;
 - Linux arm64 and x64 archives;
 - Windows arm64 and x64 archives;
+- the macOS/Linux installer and auto-update launcher;
 - the exact `git am` patch series;
 - pinned source/build metadata;
 - SHA-256 checksums and generated provenance.

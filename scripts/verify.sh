@@ -11,6 +11,10 @@ trap cleanup EXIT
 source_dir="$temporary_root/pi"
 
 cd "$repo_root"
+sh -n install.sh
+sh -n launcher.sh
+sh -n test/installer.sh
+./test/installer.sh
 npm ci --ignore-scripts
 npm run check
 
