@@ -9,6 +9,11 @@ cleanup() {
 trap cleanup EXIT
 
 source_dir="$temporary_root/pi"
+
+cd "$repo_root"
+npm ci --ignore-scripts
+npm run check
+
 "$repo_root/scripts/prepare-pi-source.sh" "$source_dir"
 
 if rg -n --hidden --glob '!.git/**' --glob '!out/**' --glob '!build/**' --glob '!release-assets/**' \
@@ -33,4 +38,4 @@ npx biome check \
     packages/ai/test/anthropic-claude-code.test.ts \
     packages/ai/test/anthropic-auth-token.test.ts
 
-echo "Patch verification passed"
+echo "Plugin and patch verification passed"

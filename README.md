@@ -2,41 +2,68 @@
 
 Claude Code wire compatibility for Pi.
 
-Pi Black is an unofficial, patch-only distribution for building Pi with Anthropic Claude Pro/Max OAuth request compatibility.
+Pi Black is an unofficial Pi package that applies Claude Code 2.1.224 request conventions to Anthropic Claude Pro/Max OAuth requests. The existing source patch and standalone-binary build system remain available as a fallback.
 
-The repository does not vendor Pi source. It pins an immutable commit from [`paoloanzn/pi`](https://github.com/paoloanzn/pi), applies a `git am` patch series, and delegates standalone compilation to Pi's own release builder.
+## Install
 
-## What the patch changes
+Pi Black is pinned to Pi 0.84.1 and fails closed on other Pi versions.
 
-For Anthropic OAuth requests only, the patch reproduces the Claude Code 2.1.224 SDK-CLI request conventions needed for subscription routing:
+```sh
+pi install git:github.com/paoloanzn/pi-black
+```
+
+For a release, pin the tag:
+
+```sh
+pi install git:github.com/paoloanzn/pi-black@v0.84.1-cc2.1.224.1
+```
+
+Then use Pi's normal Anthropic login:
+
+```text
+/login anthropic
+```
+
+The package replaces only the built-in Anthropic provider implementation and only transforms OAuth-token requests. It preserves Pi's credential storage, OAuth refresh, model behavior, tools, retries, streaming, and usage accounting. API-key requests and non-Anthropic providers pass through unchanged.
+
+## Identity discovery
+
+No identity environment variables are required. When Claude Code state exists, Pi Black reads the installation ID and account UUID from `~/.claude.json` (or the location selected by `CLAUDE_CONFIG_DIR`) in memory and adds matching request metadata. It does not copy, print, or persist those values.
+
+Current subscription routing also works when that optional metadata is unavailable, as demonstrated by the standalone Pi Black binary with no identity variables in its environment.
+
+## What it changes
+
+For Anthropic OAuth requests, Pi Black reproduces the version-specific SDK-CLI request shape:
 
 - exact billing and Agent SDK system-block ordering;
 - the prompt-dependent `cc_version` suffix;
-- the serialized-body `cch` checksum using seeded XXH64;
+- structure-aware `cch` calculation using seeded XXH64;
 - per-request `x-client-request-id` values;
-- Claude Code session and identity metadata.
+- Claude Code session headers;
+- automatically discovered identity metadata when available.
 
-API-key requests and non-Anthropic providers are unchanged.
+The checksum implementation validates and updates only the first billing system block. User content, tool results, descriptions, and nested `model` or `max_tokens` fields cannot redirect the placeholder patch.
 
-## Build
+## Verify the package
 
-Requirements, pinned inputs, and repeatability limits are in [`BUILD.md`](BUILD.md).
+```sh
+npm ci --ignore-scripts
+npm run check
+```
+
+Public CI uses fake transports only. It never makes provider requests and requires no credentials.
+
+## Patch and standalone binaries
+
+The repository still pins an immutable commit from [`paoloanzn/pi`](https://github.com/paoloanzn/pi), applies the patch under `patches/`, and delegates standalone compilation to Pi's release builder.
 
 ```sh
 ./scripts/verify.sh
 ./scripts/build-all.sh "$PWD/out"
 ```
 
-The output contains all targets supported by Pi's release script:
-
-- `darwin-arm64`
-- `darwin-x64`
-- `linux-arm64`
-- `linux-x64`
-- `windows-arm64`
-- `windows-x64`
-
-## Apply manually
+Manual patch application:
 
 ```sh
 git clone https://github.com/paoloanzn/pi.git pi
@@ -45,24 +72,10 @@ git checkout --detach 7aca0d7b3e041a9e2b635e8370b2549f032932d6
 git am ../pi-black/patches/*.patch
 ```
 
-## Runtime configuration
-
-Pi's normal Anthropic login stores the OAuth credential. Subscription routing additionally requires identity values belonging to the same user and installation:
-
-```sh
-export CLAUDE_CODE_DEVICE_ID='<your-private-device-id>'
-export CLAUDE_CODE_ACCOUNT_UUID='<your-private-account-uuid>'
-./pi
-```
-
-No real values are included here or in release artifacts. Do not publish tokens, identifiers, captures, or private Claude state.
-
-## Releases
-
-Pushing a `v*` tag runs `.github/workflows/release.yml`. It verifies the patch, builds all six targets, creates checksums and provenance, and publishes the assets to a GitHub Release. Pull requests and ordinary pushes run `.github/workflows/verify.yml` without provider credentials or paid API calls.
+Build requirements and repeatability limits are in [`BUILD.md`](BUILD.md).
 
 ## Status and terms
 
 This project is unofficial and is not affiliated with or endorsed by Anthropic or the upstream Pi project. Users must provide their own valid account credentials and determine whether use complies with applicable service terms. The compatibility mechanism is version-specific and must be revalidated when Claude Code or Pi changes.
 
-Pi and the derived patch are distributed under the MIT license; see [`LICENSE`](LICENSE).
+No OAuth tokens, identifiers, captures, or private Claude state are included in the package or release artifacts. Pi and the derived patch are distributed under the MIT license; see [`LICENSE`](LICENSE).

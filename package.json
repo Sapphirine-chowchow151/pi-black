@@ -1,0 +1,35 @@
+{
+  "name": "pi-black",
+  "version": "0.1.0",
+  "description": "Claude Code wire compatibility for Pi",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "keywords": [
+    "pi-package",
+    "pi-extension"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions/pi-black.ts"
+    ]
+  },
+  "scripts": {
+    "check": "tsc --noEmit && vitest --run",
+    "test": "vitest --run"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "0.84.1",
+    "@earendil-works/pi-coding-agent": "0.84.1"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-ai": "0.84.1",
+    "@earendil-works/pi-coding-agent": "0.84.1",
+    "@types/node": "24.12.4",
+    "typescript": "5.9.3",
+    "vitest": "4.1.9"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  }
+}

@@ -1,4 +1,4 @@
-name: Verify patch series
+name: Verify plugin and patch series
 
 on:
   push:
@@ -39,5 +39,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev ripgrep
 
-      - name: Verify pinned patch and focused tests
+      - name: Verify plugin, pinned patch, and focused tests
         run: ./scripts/verify.sh

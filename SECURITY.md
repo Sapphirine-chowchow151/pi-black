@@ -10,7 +10,7 @@ Do not commit or attach any of the following:
 - intercepted request captures;
 - extracted private prompts or local Claude state.
 
-The patch accepts identity values only at runtime. CI never performs a live provider request and requires no provider secrets.
+The package reads matching identity values from Claude Code's local state in memory when available. It does not copy, log, or persist them. The retained patch can also read explicit runtime environment values. CI never reads local Claude state, performs a live provider request, or requires provider secrets.
 
 ## Release verification
 

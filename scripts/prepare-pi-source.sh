@@ -35,10 +35,11 @@ if [[ ! -e "${patches[0]}" ]]; then
 fi
 git -C "$destination" -c commit.gpgSign=false am --committer-date-is-author-date "${patches[@]}"
 
-actual_parent="$(git -C "$destination" rev-parse HEAD^)"
+patch_count="${#patches[@]}"
+actual_series_base="$(git -C "$destination" rev-parse "HEAD~$patch_count")"
 actual_patched="$(git -C "$destination" rev-parse HEAD)"
-if [[ "$actual_parent" != "$PI_BASE_COMMIT" ]]; then
-    echo "Patched commit parent $actual_parent does not match $PI_BASE_COMMIT" >&2
+if [[ "$actual_series_base" != "$PI_BASE_COMMIT" ]]; then
+    echo "Patch series base $actual_series_base does not match $PI_BASE_COMMIT" >&2
     exit 1
 fi
 if [[ "$actual_patched" != "$PI_PATCHED_COMMIT" ]]; then
@@ -46,4 +47,4 @@ if [[ "$actual_patched" != "$PI_PATCHED_COMMIT" ]]; then
     exit 1
 fi
 
-printf 'Prepared Pi %s\nBase:    %s\nPatched: %s\n' "$PI_VERSION" "$actual_parent" "$actual_patched"
+printf 'Prepared Pi %s\nBase:    %s\nPatched: %s\n' "$PI_VERSION" "$actual_series_base" "$actual_patched"
