@@ -16,6 +16,7 @@ expected=(
     pi-windows-x64.zip
     0001-feat-ai-add-Claude-Code-OAuth-request-compatibility.patch
     0002-fix-ai-harden-Claude-Code-cch-body-patching.patch
+    0003-feat-coding-agent-customize-Pi-Black-startup.patch
     PI_BUILD_INPUTS.env
     BUILD.md
     PROVENANCE.txt
