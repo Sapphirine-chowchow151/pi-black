@@ -70,14 +70,23 @@ require_command() {
 download_file() {
   url="$1"
   output="$2"
+  progress="${3:-quiet}"
 
   if command -v curl >/dev/null 2>&1; then
-    curl -fsSL --retry 3 "$url" -o "$output"
+    if [ "$progress" = "progress" ] && [ -t 2 ]; then
+      curl -fL --retry 3 --progress-bar "$url" -o "$output"
+    else
+      curl -fsSL --retry 3 "$url" -o "$output"
+    fi
     return
   fi
 
   if command -v wget >/dev/null 2>&1; then
-    wget -q -O "$output" "$url"
+    if [ "$progress" = "progress" ] && [ -t 2 ]; then
+      wget -O "$output" "$url"
+    else
+      wget -q -O "$output" "$url"
+    fi
     return
   fi
 
@@ -237,7 +246,7 @@ step "Detected platform: $platform_label"
 step "Resolved release: $release_label"
 step "Downloading $archive"
 download_file "$base_url/$manifest" "$manifest_path"
-download_file "$base_url/$archive" "$archive_path"
+download_file "$base_url/$archive" "$archive_path" progress
 download_file "$base_url/$launcher" "$launcher_path"
 
 expected_archive_digest="$(manifest_digest "$manifest_path" "$archive")"
